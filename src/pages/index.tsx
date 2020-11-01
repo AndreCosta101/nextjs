@@ -41,7 +41,7 @@ export default function Home({ recommendedProducts }: IHomeProps) {
 
 // server side rendering para motores de busca (TTFB Time to First Bite= 2s)
 export const getServerSideProps: GetServerSideProps<IHomeProps> = async () => {
-  const response = await fetch('http://localhost:3333/recommended');
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/recommended`);
   const recommendedProducts = await response.json();
 
   return {

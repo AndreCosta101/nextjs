@@ -4,16 +4,16 @@ import { useState } from 'react';
 
 const AddToCartModal = dynamic(
   () => import('../../../components/AddToCartModal'),
-  { loading: () => <p>Loading...</p> }
+  { loading: () => <p>Loading...</p>, ssr: false }
 )
-/** ssr:
- * Quando eu precisar utilizar um componente e esse componente depende
- * exclusivamente diretamente de algo que só existe no browser e não dentro
- * do node, vc pode colocar ssr: false, para fazer ele sempre ser renderizado
- * pelo lado do browser e nunca pelo servidor.
- * ssr: server side rendering
- *  { loading: () => <p>Loading...</p>, ssr: false}
- */
+/** ssr: --->
+* Quando eu precisar utilizar um componente e esse componente depende
+* exclusivamente diretamente de algo que só existe no browser e não dentro
+* do node, vc pode colocar ssr: false, para fazer ele sempre ser renderizado
+* pelo lado do browser e nunca pelo servidor.
+* ssr: server side rendering
+*  { loading: () => <p>Loading...</p>, ssr: false}
+*/
 
 
 export default function Product() {
