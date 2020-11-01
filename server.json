@@ -7,6 +7,18 @@
     {
       "id": "calcas",
       "title": "Calças"
+    },
+    {
+      "id": "meias",
+      "title": "Meias"
+    },
+    {
+      "id": "camisas",
+      "title": "Camisas"
+    },
+    {
+      "id": "outros",
+      "title": "Outros"
     }
   ],
   "products": [
@@ -37,6 +49,20 @@
       "price": 109.9,
       "category_id": "calcas",
       "slug": "calca-azul-react"
+    },
+    {
+      "id": 5,
+      "title": "Meia Node JS",
+      "price": 50.9,
+      "category_id": "meias",
+      "slug": "meia-nodejs"
+    },
+    {
+      "id": 6,
+      "title": "Camisa Adonis",
+      "price": 50.9,
+      "category_id": "camisas",
+      "slug": "camisa-adonis"
     }
   ],
   "recommended": [

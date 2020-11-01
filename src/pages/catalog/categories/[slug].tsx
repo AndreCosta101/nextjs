@@ -13,6 +13,10 @@ interface CategoryProps {
 export default function Category({ products }: CategoryProps) {
   const router = useRouter();
 
+  if (router.isFallback) {
+    return <p>CARREGANDO...</p>
+  }
+
   return (
     <div>
       <h1>{router.query.slug}</h1>
@@ -38,6 +42,7 @@ export default function Category({ products }: CategoryProps) {
   Ex: página de produtos
  */
 export const getStaticPaths: GetStaticPaths = async () => {
+  // se tiver muitos, não puxa todos.Vai demorar décadas pra carregar
   const response = await fetch(`http://localhost:3333/categories`)
   const categories = await response.json();
 
@@ -49,7 +54,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   }
 };
 
