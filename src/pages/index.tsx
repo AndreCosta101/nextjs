@@ -1,3 +1,4 @@
+import SEO from '@/components/SEO';
 import { GetServerSideProps } from 'next';
 import { Title } from '../styles/pages/Home';
 
@@ -19,6 +20,11 @@ export default function Home({ recommendedProducts }: IHomeProps) {
 
   return (
     <div>
+      <SEO
+        title="DevCommerce, your best choice !"
+        image="bond.png"
+        shouldExcludeTitleSuffix />
+
       <section>
         <Title>Yippee Kai Yay MotherFucker!!!</Title>
 
@@ -40,6 +46,7 @@ export default function Home({ recommendedProducts }: IHomeProps) {
 }
 
 // server side rendering para motores de busca (TTFB Time to First Bite= 2s)
+// O NEXT_PUBLIC_ torna a variável pública, disponível no browser
 export const getServerSideProps: GetServerSideProps<IHomeProps> = async () => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/recommended`);
   const recommendedProducts = await response.json();
