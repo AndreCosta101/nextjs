@@ -1,36 +1,58 @@
 import { useRouter } from 'next/router';
-import dynamic from 'next/dynamic';
-import { useState } from 'react';
 
-const AddToCartModal = dynamic(
-  () => import('@/components/AddToCartModal'),
-  { loading: () => <p>Loading...</p>, ssr: false }
-)
-/** ssr: --->
-* Quando eu precisar utilizar um componente e esse componente depende
-* exclusivamente diretamente de algo que só existe no browser e não dentro
-* do node, vc pode colocar ssr: false, para fazer ele sempre ser renderizado
-* pelo lado do browser e nunca pelo servidor.
-* ssr: server side rendering
-*  { loading: () => <p>Loading...</p>, ssr: false}
-*/
+import { GetStaticPaths, GetStaticProps } from "next";
+import { client } from '@/lib/prismic';
+import PrismicDOM from 'prismic-dom';
+import Prismic from 'prismic-javascript';
+import { Document } from 'prismic-javascript/types/documents';
 
 
-export default function Product() {
+interface ProductProps {
+  product: Document;
+}
+
+
+export default function Product({ product }: ProductProps) {
   const router = useRouter();
-  const [isAddToCartModalVisible, setIsAddToCartModalVisible] = useState(false)
 
-  function handleAddToCart() {
-    setIsAddToCartModalVisible(true)
+  if (router.isFallback) {
+    return <p>CARREGANDO...</p>
   }
+  console.log(product.data)
 
   return (
     <div>
-      <h1>{router.query.slug}</h1>
+      <h1>
+        {PrismicDOM.RichText.asText(product.data.title)}
+      </h1>
 
-      <button onClick={handleAddToCart}>Add To Cart</button>
+      <img src={product.data.thumbnail.url} width="600" alt={product.data.title} />
 
-      {isAddToCartModalVisible && <AddToCartModal />}
+      <div dangerouslySetInnerHTML={{ __html: PrismicDOM.RichText.asHtml(product.data.description) }} />
+
+      <p>Price: ${product.data.price} </p>
     </div>
   )
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+
+  return {
+    //assim vai carregar conforme o usuário for acessando. Com o fallback true, ele tenta encontrar na api de novo
+    paths: [],
+    fallback: true
+  }
+};
+
+export const getStaticProps: GetStaticProps<ProductProps> = async (context) => {
+  const { slug } = context.params;
+
+  const product = await client().getByUID('product', String(slug), {})
+
+  return {
+    props: {
+      product,
+    },
+    revalidate: 5,
+  }
 }

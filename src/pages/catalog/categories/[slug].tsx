@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import { GetStaticPaths, GetStaticProps } from "next";
+import { client } from '@/lib/prismic';
 import Link from 'next/link'
 import PrismicDOM from 'prismic-dom';
-import { client } from '@/lib/prismic';
 import Prismic from 'prismic-javascript';
 import { Document } from 'prismic-javascript/types/documents';
 
@@ -28,7 +28,7 @@ export default function Category({ category, products }: CategoryProps) {
         {products.map(product => {
           return (
             <li key={product.id}>
-              <Link href={`/catalog/products/${product.id}`}>
+              <Link href={`/catalog/products/${product.uid}`}>
                 <a>
                   {PrismicDOM.RichText.asText(product.data.title)}
                 </a>
